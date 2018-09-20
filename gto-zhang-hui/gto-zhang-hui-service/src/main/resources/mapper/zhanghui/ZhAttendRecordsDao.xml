@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gto.zhanghui.dao.ZhAttendRecordsDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.gto.zhanghui.entity.ZhAttendRecordsEntity" id="zhAttendRecordsMap">
+        <result property="id" column="id"/>
+        <result property="signAddress" column="sign_address"/>
+        <result property="attendTypeId" column="attend_type_id"/>
+        <result property="visitors" column="visitors"/>
+        <result property="content" column="content"/>
+        <result property="signRemark" column="sign_remark"/>
+        <result property="signTime" column="sign_time"/>
+        <result property="url1" column="url1"/>
+        <result property="url2" column="url2"/>
+        <result property="endRemark" column="end_remark"/>
+        <result property="result" column="result"/>
+        <result property="endTime" column="end_time"/>
+        <result property="endAddress" column="end_address"/>
+        <result property="createUserCode" column="create_user_code"/>
+        <result property="createUserName" column="create_user_name"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateUserCode" column="update_user_code"/>
+        <result property="updateUserName" column="update_user_name"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+    <resultMap type="com.gto.zhanghui.response.VisitCollect" id="collectMap">
+    	<result property="nick_name" column="nickName"/>
+    	<result property="dot_name" column="dotName"/>
+    	<result property="create_time" column="createTime"/>
+    	<result property="visit_num" column="visitNum"/>
+    	<result property="farewell_num" column="farewellNum"/>
+    	<result property="account" column="account"/>
+    </resultMap>
+    <resultMap type="com.gto.zhanghui.response.VisitFarewellDetail" id="detailMap">
+    	<result property="visitors" column="visitors"/>
+    	<result property="nick_name" column="nickName"/>
+    	<result property="account" column="account"/>
+    	<result property="dot_name" column="dotName"/>
+    	<result property="dot_num" column="dotNum"/>
+    	<result property="sign_address" column="signAddress"/>
+    	<result property="attend_type_id" column="attendTypeId"/>
+    	<result property="content" column="content"/>
+    	<result property="sign_remark" column="signRemark"/>
+    	<result property="sign_time" column="signTime"/>
+    	<result property="create_time" column="createTime"/>
+    	<result property="result" column="result"/>
+    	<result property="end_time" column="endTime"/>
+    	<result property="update_time" column="updateTime"/>
+    	<result property="url1" column="url1"/>
+    	<result property="url2" column="url2"/>
+    </resultMap>
+    
+    <!-- 1.	拜访记录查询 -->
+    <select id="selectVisitHistory" resultMap="collectMap">
+    	SELECT u.nick_name as nick_name,
+			 	u.account as account,
+			 	d.dot_name as dot_name,
+			 	DATE_FORMAT(ar.create_time,'%Y-%m-%d') as create_time,
+			 	COUNT(ar.create_user_code) as visit_num,
+			 	COUNT(ar.update_time) as farewell_num
+
+		FROM zh_attend_records ar 
+		
+			LEFT JOIN zh_users u ON ar.create_user_name = u.nick_name
+			LEFT JOIN zh_dot d ON ar.create_user_name = d.create_user_name
+		
+		WHERE 1 =1
+		<if test="empCode != null and empCode != ''">
+			AND (ar.create_user_name = #{empCode} or ar.create_user_code = #{empCode})
+		</if>
+		<if test="siteCode != null and siteCode != ''">
+			AND (d.dot_num = #{siteCode} or d.dot_name = #{siteCode})
+		</if>
+		<if test="startTime != null and endTime != null and startTime != '' and endTime != ''">
+			AND ar.create_time BETWEEN #{startTime} and #{endTime}
+		</if>
+		GROUP BY u.nick_name HAVING visit_num >= 0 LIMIT #{limit},#{offset}
+    </select>
+    
+    <select id="selectVisitHistoryCount" resultType="java.lang.Integer">
+    SELECT COUNT(*) FROM 
+    	(SELECT u.nick_name as nick_name,
+			 	u.account as account,
+			 	d.dot_name as dot_name,
+			 	DATE_FORMAT(ar.create_time,'%Y-%m-%d') as create_time,
+			 	COUNT(ar.create_user_code) as visit_num,
+			 	COUNT(ar.update_time) as farewell_num
+
+		FROM zh_attend_records ar 
+		
+			LEFT JOIN zh_users u ON ar.create_user_name = u.nick_name
+			LEFT JOIN zh_dot d ON ar.create_user_name = d.create_user_name
+		
+		WHERE 1 =1
+		<if test="empCode != null and empCode != ''">
+			AND (ar.create_user_name = #{empCode} or ar.create_user_code = #{empCode})
+		</if>
+		<if test="siteCode != null and siteCode != ''">
+			AND (d.dot_num = #{siteCode} or d.dot_name = #{siteCode})
+		</if>
+		<if test="startTime != null and endTime != null and startTime != '' and endTime != ''">
+			AND ar.create_time BETWEEN #{startTime} and #{endTime}
+		</if>
+		GROUP BY u.nick_name HAVING visit_num >= 0) as tb
+    </select>
+    
+    <!-- 拜访明细 -->
+    <select id="selectVisit" resultMap="detailMap">
+    	SELECT ar.visitors as visitors,
+				u.nick_name as nick_name,
+				u.account as account,
+				d.dot_name as dot_name,
+				d.dot_num as dot_num,
+				ar.sign_address as sign_address,
+				ar.attend_type_id as attend_type_id,
+				ar.content as content,
+				ar.sign_remark as sign_remark,
+				ar.sign_time as sign_time,
+				ar.create_time as create_time,
+				ar.result as result,
+				ar.end_time as end_time,
+				ar.update_time as update_time,
+				ar.url1 as url1,
+				ar.url2 as url2
+
+		FROM zh_attend_records ar 
+		
+			LEFT JOIN zh_users u ON ar.create_user_name = u.nick_name
+		
+			LEFT JOIN zh_dot d ON ar.create_user_name = d.create_user_name
+		
+		WHERE 1 = 1
+		<if test="startTime != null and endTime != null and startTime != '' and endTime != ''">
+			AND ar.create_time BETWEEN #{startTime} and #{endTime}
+		</if>
+		<if test="account != null">
+			AND u.account = #{account} 
+		</if>
+		LIMIT #{limit},#{offset}
+    </select>
+    
+    <select id="selectVisitCount" resultType="java.lang.Integer">
+    SELECT COUNT(*) FROM
+    	(SELECT ar.visitors as visitors,
+				u.nick_name as nick_name,
+				u.account as account,
+				d.dot_name as dot_name,
+				d.dot_num as dot_num,
+				ar.sign_address as sign_address,
+				ar.attend_type_id as attend_type_id,
+				ar.content as content,
+				ar.sign_remark as sign_remark,
+				ar.sign_time as sign_time,
+				ar.create_time as create_time,
+				ar.result as result,
+				ar.end_time as end_time,
+				ar.update_time as update_time,
+				ar.url1 as url1,
+				ar.url2 as url2
+
+		FROM zh_attend_records ar 
+		
+			LEFT JOIN zh_users u ON ar.create_user_name = u.nick_name
+		
+			LEFT JOIN zh_dot d ON ar.create_user_name = d.create_user_name
+		
+		WHERE 1 = 1
+		<if test="startTime != null and endTime != null and startTime != '' and endTime != ''">
+			AND ar.create_time BETWEEN #{startTime} and #{endTime}
+		</if>
+		<if test="account != null">
+			AND u.account = #{account} 
+		</if>
+		) as tb
+    </select>
+    
+    <!-- 未拜别明细 -->
+    <select id="selectNoFarewell" resultMap="detailMap">
+    	SELECT ar.visitors as visitors,
+				u.nick_name as nick_name,
+				u.account as account,
+				d.dot_name as dot_name,
+				d.dot_num as dot_num,
+				ar.sign_address as sign_address,
+				ar.attend_type_id as attend_type_id,
+				ar.content as content,
+				ar.sign_remark as sign_remark,
+				ar.sign_time as sign_time,
+				ar.create_time as create_time,
+				ar.result as result,
+				ar.end_time as end_time,
+				ar.update_time as update_time,
+				ar.url1 as url1,
+				ar.url2 as url2
+
+		FROM zh_attend_records ar 
+		
+			LEFT JOIN zh_users u ON ar.create_user_name = u.nick_name
+		
+			LEFT JOIN zh_dot d ON ar.create_user_name = d.create_user_name
+		
+		WHERE 1 = 1
+		<if test="startTime != null and endTime != null and startTime != '' and endTime != ''">
+			AND ar.create_time BETWEEN #{startTime} and #{endTime}
+		</if>
+		<if test="account != null">
+			AND u.account = #{account}
+		</if>
+			AND ar.update_time IS NULL LIMIT #{limit},#{offset}
+    </select>
+    
+    <select id="selectNoFarewellCount" resultType="java.lang.Integer">
+    SELECT COUNT(*) FROM 
+    	(SELECT ar.visitors as visitors,
+				u.nick_name as nick_name,
+				u.account as account,
+				d.dot_name as dot_name,
+				d.dot_num as dot_num,
+				ar.sign_address as sign_address,
+				ar.attend_type_id as attend_type_id,
+				ar.content as content,
+				ar.sign_remark as sign_remark,
+				ar.sign_time as sign_time,
+				ar.create_time as create_time,
+				ar.result as result,
+				ar.end_time as end_time,
+				ar.update_time as update_time,
+				ar.url1 as url1,
+				ar.url2 as url2
+
+		FROM zh_attend_records ar 
+		
+			LEFT JOIN zh_users u ON ar.create_user_name = u.nick_name
+		
+			LEFT JOIN zh_dot d ON ar.create_user_name = d.create_user_name
+		
+		WHERE 1 = 1
+		<if test="startTime != null and endTime != null and startTime != '' and endTime != ''">
+			AND ar.create_time BETWEEN #{startTime} and #{endTime}
+		</if>
+		<if test="account != null">
+			AND u.account = #{account}
+		</if>
+			AND ar.update_time IS NULL) as coo
+    </select>
+    
+</mapper>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gto.zhanghui.dao.ZhWorkLogGroupDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.gto.zhanghui.entity.ZhWorkLogGroupEntity" id="zhWorkLogGroupMap">
+        <result property="id" column="id"/>
+        <result property="groupName" column="group_name"/>
+        <result property="groupLeader" column="group_leader"/>
+        <result property="remark" column="remark"/>
+        <result property="allUserName" column="all_user_name"/>
+        <result property="createUserCode" column="create_user_code"/>
+        <result property="createUserName" column="create_user_name"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateUserCode" column="update_user_code"/>
+        <result property="updateUserName" column="update_user_name"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="isDelete" column="is_delete"/>
+    </resultMap>
+    
+    <delete id="deleteLogGroup" parameterType="java.util.List">
+    	update zh_work_log_group set is_delete = '1'
+    	where id in 
+    	<foreach item="id" collection="list" open="(" close=")" separator=",">
+    		#{id}
+    	</foreach>
+    </delete>
+
+
+</mapper>

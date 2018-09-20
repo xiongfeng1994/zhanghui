@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gto.zhanghui.dao.ZhDotDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.gto.zhanghui.entity.ZhDotEntity" id="zhDotMap">
+        <result property="id" column="id"/>
+        <result property="dotNum" column="dot_num"/>
+        <result property="dotName" column="dot_name"/>
+        <result property="level" column="level"/>
+        <result property="parentNum" column="parent_num"/>
+        <result property="remark" column="remark"/>
+        <result property="createUserCode" column="create_user_code"/>
+        <result property="createUserName" column="create_user_name"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateUserCode" column="update_user_code"/>
+        <result property="updateUserName" column="update_user_name"/>
+        <result property="updateTime" column="update_time"/>
+    </resultMap>
+
+
+</mapper>

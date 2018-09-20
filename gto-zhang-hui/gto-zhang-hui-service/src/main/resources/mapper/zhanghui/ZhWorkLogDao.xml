@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.gto.zhanghui.dao.ZhWorkLogDao">
+
+	<!-- 可根据自己的需求，是否要使用 -->
+    <resultMap type="com.gto.zhanghui.entity.ZhWorkLogEntity" id="zhWorkLogMap">
+        <result property="id" column="id"/>
+        <result property="todayWork" column="today_work"/>
+        <result property="tomorrowPlan" column="tomorrow_plan"/>
+        <result property="tomorrowPromise" column="tomorrow_promise"/>
+        <result property="todayGood" column="today_good"/>
+        <result property="todayBad" column="today_bad"/>
+        <result property="createUserCode" column="create_user_code"/>
+        <result property="createUserName" column="create_user_name"/>
+        <result property="createTime" column="create_time"/>
+        <result property="updateTime" column="update_time"/>
+        <result property="updateUserCode" column="update_user_code"/>
+        <result property="updateUserName" column="update_user_name"/>
+    </resultMap>
+	<resultMap type="com.gto.zhanghui.response.WorkLogCollect" id="collectMap">
+		<result property="groupName" column="group_name"/>
+        <result property="createTime" column="create_time"/>
+        <result property="shouldSubNum" column="should_sub_num"/>
+        <result property="actualSubNum" column="actual_sub_num"/>
+        <result property="unsubNum" column="unsub_num"/>
+        <result property="id" column="id"/>
+	</resultMap>
+	<resultMap type="com.gto.zhanghui.response.WorkLogDetail" id="detailMap">
+		<result property="nickName" column="nick_name"/>
+		<result property="account" column="account"/>
+		<result property="dotName" column="dot_name"/>
+		<result property="dotNum" column="dot_num"/>
+		<result property="groupName" column="group_name"/>
+		<result property="id" column="id"/>
+		<result property="groupLeader" column="group_leader"/>
+		<result property="todayWork" column="today_work"/>
+		<result property="todayGood" column="today_good"/>
+		<result property="todayBad" column="today_bad"/>
+		<result property="tomorrowPlan" column="tomorrow_plan"/>
+		<result property="tomorrowPromise" column="tomorrow_promise"/>
+		<result property="createTime" column="create_time"/>
+	</resultMap>
+	
+	<select id="selectWorkLogCollect" resultMap="collectMap">
+		SELECT * FROM
+		(SELECT  wlg.group_name as group_name,
+						wl.create_time as create_time,
+						COUNT(wl.create_user_code) as should_sub_num,
+						COUNT(wl.create_time) as actual_sub_num,
+						COUNT(wl.create_user_code)-COUNT(wl.create_time) as unsub_num,
+						wlg.all_user_name as all_user_name,
+						GROUP_CONCAT(u.nick_name) as nick_name,
+						wlg.id as id
+		
+		FROM zh_work_log wl
+		
+		LEFT JOIN zh_users u ON wl.create_user_code = u.account
+		
+		LEFT JOIN zh_work_log_group wlg ON u.group_id = wlg.id WHERE wlg.is_delete = '0'
+		
+		GROUP BY wlg.group_name HAVING should_sub_num>=0 AND actual_sub_num>=0 AND unsub_num>=0) as tb
+		
+		WHERE 1 = 1
+		<if test="groupCode != null and groupCode != ''">
+			AND (tb.group_name = #{groupCode} OR tb.id = #{groupCode})
+		</if>
+		<if test="empCode != null and empCode != ''">
+			AND (tb.all_user_name LIKE CONCAT('%',#{empCode},'%') OR tb.nick_name LIKE CONCAT('%',#{empCode},'%'))
+		</if>
+		<if test="startTime != null and endTime != null and startTime != '' and endTime != ''">
+			AND tb.create_time BETWEEN #{startTime} AND #{endTime}
+		</if>
+		LIMIT #{limit},#{offset}
+	</select>
+	
+	<select id="selectWorkLogCollectCount" resultType="java.lang.Integer">
+	SELECT COUNT(*) FROM 
+		(SELECT * FROM
+		(SELECT  wlg.group_name as group_name,
+						wl.create_time as create_time,
+						COUNT(wl.create_user_code) as should_sub_num,
+						COUNT(wl.create_time) as actual_sub_num,
+						COUNT(wl.create_user_code)-COUNT(wl.create_time) as unsub_num,
+						wlg.all_user_name as all_user_name,
+						GROUP_CONCAT(u.nick_name) as nick_name,
+						wlg.id as id
+		
+		FROM zh_work_log wl
+		
+		LEFT JOIN zh_users u ON wl.create_user_code = u.account
+		
+		LEFT JOIN zh_work_log_group wlg ON u.group_id = wlg.id WHERE wlg.is_delete = '0'
+		
+		GROUP BY wlg.group_name HAVING should_sub_num>=0 AND actual_sub_num>=0 AND unsub_num>=0) as tb
+		
+		WHERE 1 = 1
+		<if test="groupCode != null and groupCode != ''">
+			AND (tb.group_name = #{groupCode} OR tb.id = #{groupCode})
+		</if>
+		<if test="empCode != null and empCode != ''">
+			AND (tb.all_user_name LIKE CONCAT('%',#{empCode},'%') OR tb.nick_name LIKE CONCAT('%',#{empCode},'%'))
+		</if>
+		<if test="startTime != null and endTime != null and startTime != '' and endTime != ''">
+			AND tb.create_time BETWEEN #{startTime} AND #{endTime}
+		</if>
+		) as coo
+	</select>
+	
+	<select id="selectWorkLogDetail" resultMap="detailMap">
+		SELECT * FROM
+		(SELECT u.nick_name as nick_name,
+						u.account as account,
+						d.dot_name as dot_name,
+						d.dot_num as dot_num,
+						wlg.group_name as group_name,
+						wlg.id as id,
+						wlg.group_leader as group_leader,
+						wl.today_work as today_work,
+						wl.today_good as today_good,
+						wl.today_bad as today_bad,
+						wl.tomorrow_plan as tomorrow_plan,
+						wl.tomorrow_promise as tomorrow_promise,
+						wl.create_time as create_time
+		
+		FROM zh_work_log wl
+		
+		LEFT JOIN zh_users u ON wl.create_user_code = u.account
+		
+		LEFT JOIN zh_dot d ON u.account = d.create_user_code
+		
+		LEFT JOIN zh_work_log_group wlg ON u.group_id = wlg.id WHERE wlg.is_delete = '0'
+		
+		) as tb WHERE 1 = 1 
+		<if test="id != null and id != ''">
+			AND tb.id = #{id}
+		</if>
+		<if test="startTime != null and startTime != '' and endTime != null and endTime != ''">
+			AND tb.create_time BETWEEN #{startTime} AND #{endTime}
+		</if>
+		LIMIT #{limit},#{offset}
+	</select>
+	
+	<select id="selectWorkLogDetailCount" resultType="java.lang.Integer">
+	SELECT COUNT(*) FROM 
+		(SELECT * FROM
+		(SELECT u.nick_name as nick_name,
+						u.account as account,
+						d.dot_name as dot_name,
+						d.dot_num as dot_num,
+						wlg.group_name as group_name,
+						wlg.id as id,
+						wlg.group_leader as group_leader,
+						wl.today_work as today_work,
+						wl.today_good as today_good,
+						wl.today_bad as today_bad,
+						wl.tomorrow_plan as tomorrow_plan,
+						wl.tomorrow_promise as tomorrow_promise,
+						wl.create_time as create_time
+		
+		FROM zh_work_log wl
+		
+		LEFT JOIN zh_users u ON wl.create_user_code = u.account
+		
+		LEFT JOIN zh_dot d ON u.account = d.create_user_code
+		
+		LEFT JOIN zh_work_log_group wlg ON u.group_id = wlg.id WHERE wlg.is_delete = '0'
+		
+		) as tb WHERE 1 = 1 
+		<if test="id != null and id != ''">
+			AND tb.id = #{id} 
+		</if>
+		<if test="startTime != null and startTime != '' and endTime != null and endTime != ''">
+			AND tb.create_time BETWEEN #{startTime} AND #{endTime}
+		</if>
+		) as coo
+	</select>
+</mapper>
