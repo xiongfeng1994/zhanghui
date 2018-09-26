@@ -63,8 +63,8 @@
 
 		FROM zh_attend_records ar 
 		
-			LEFT JOIN zh_users u ON ar.create_user_name = u.nick_name
-			LEFT JOIN zh_dot d ON ar.create_user_name = d.create_user_name
+			LEFT JOIN zh_users u ON ar.create_user_code = u.account
+			LEFT JOIN zh_dot d ON u.account = d.create_user_code
 		
 		WHERE 1 =1
 		<if test="empCode != null and empCode != ''">
@@ -76,7 +76,7 @@
 		<if test="startTime != null and endTime != null and startTime != '' and endTime != ''">
 			AND ar.create_time BETWEEN #{startTime} and #{endTime}
 		</if>
-		GROUP BY u.nick_name HAVING visit_num >= 0 LIMIT #{limit},#{offset}
+		GROUP BY DATE_FORMAT(ar.create_time,'%Y-%m-%d'),u.account HAVING visit_num >= 0
     </select>
     
     <select id="selectVisitHistoryCount" resultType="java.lang.Integer">
@@ -90,8 +90,8 @@
 
 		FROM zh_attend_records ar 
 		
-			LEFT JOIN zh_users u ON ar.create_user_name = u.nick_name
-			LEFT JOIN zh_dot d ON ar.create_user_name = d.create_user_name
+			LEFT JOIN zh_users u ON ar.create_user_code = u.account
+			LEFT JOIN zh_dot d ON u.account = d.create_user_code
 		
 		WHERE 1 =1
 		<if test="empCode != null and empCode != ''">
@@ -103,7 +103,7 @@
 		<if test="startTime != null and endTime != null and startTime != '' and endTime != ''">
 			AND ar.create_time BETWEEN #{startTime} and #{endTime}
 		</if>
-		GROUP BY u.nick_name HAVING visit_num >= 0) as tb
+		GROUP BY DATE_FORMAT(ar.create_time,'%Y-%m-%d'),u.account HAVING visit_num >= 0) as tb
     </select>
     
     <!-- 拜访明细 -->

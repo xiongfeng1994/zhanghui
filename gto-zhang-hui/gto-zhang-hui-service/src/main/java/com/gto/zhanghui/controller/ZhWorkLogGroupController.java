@@ -51,8 +51,8 @@ public class ZhWorkLogGroupController {
     	String authorization = request.getHeader("Authorization");
     	String value = RedisCacheUtil.get(authorization);
     	JSONObject object = JSON.parseObject(value);
-    	String userCode = object.getString("account");
-    	String userName = object.getString("nickName");
+    	String userCode = object.getString("userCode");
+    	String userName = object.getString("userName");
     	zhWorkLogGroup.setCreateUserName(userName);
     	zhWorkLogGroup.setCreateUserCode(userCode);
     	zhWorkLogGroup.setIsDelete(0);
@@ -87,8 +87,8 @@ public class ZhWorkLogGroupController {
     	String authorization = request.getHeader("Authorization");
     	String value = RedisCacheUtil.get(authorization);
     	JSONObject object = JSON.parseObject(value);
-    	String userCode = object.getString("account");
-    	String userName = object.getString("nickName");
+    	String userCode = object.getString("userCode");
+    	String userName = object.getString("userName");
     	zhWorkLogGroup.setUpdateUserCode(userCode);
     	zhWorkLogGroup.setUpdateUserName(userName);
     	zhWorkLogGroup.setUpdateTime(new Date());

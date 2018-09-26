@@ -1,35 +1,68 @@
 package com.gto.zhanghui.request;
 
+import com.baomidou.mybatisplus.annotations.TableName;
+
+@TableName("zh_notice_msg")
 public class NoticeMessage {
 
-	private String title;
-	private String content;
-	private String showTime;
-	private String pushType;
+	private String msgId;
+	private String msgPublishTime;
+	private String msgType;
+	private String msgInfoType;
+	private String msgInfoTitle;
+	private String msgInfoDetails;
+	private String msgInfoPublishMan;
+	private String msgInfoPublishTime;
 	
-	public String getTitle() {
-		return title;
+	public String getMsgId() {
+		return msgId;
 	}
-	public void setTitle(String title) {
-		this.title = title;
+	public void setMsgId(String msgId) {
+		this.msgId = msgId;
 	}
-	public String getContent() {
-		return content;
+	public String getMsgPublishTime() {
+		return msgPublishTime;
 	}
-	public void setContent(String content) {
-		this.content = content;
+	public void setMsgPublishTime(String msgPublishTime) {
+		this.msgPublishTime = msgPublishTime;
 	}
-	public String getShowTime() {
-		return showTime;
+	public String getMsgType() {
+		return msgType;
 	}
-	public void setShowTime(String showTime) {
-		this.showTime = showTime;
+	public void setMsgType(String msgType) {
+		this.msgType = msgType;
 	}
-	public String getPushType() {
-		return pushType;
+	public String getMsgInfoType() {
+		return msgInfoType;
 	}
-	public void setPushType(String pushType) {
-		this.pushType = pushType;
+	public void setMsgInfoType(String msgInfoType) {
+		this.msgInfoType = msgInfoType;
 	}
+	public String getMsgInfoTitle() {
+		return msgInfoTitle;
+	}
+	public void setMsgInfoTitle(String msgInfoTitle) {
+		this.msgInfoTitle = msgInfoTitle;
+	}
+	public String getMsgInfoDetails() {
+		return msgInfoDetails;
+	}
+	public void setMsgInfoDetails(String msgInfoDetails) {
+		this.msgInfoDetails = msgInfoDetails;
+	}
+	public String getMsgInfoPublishMan() {
+		return msgInfoPublishMan;
+	}
+	public void setMsgInfoPublishMan(String msgInfoPublishMan) {
+		this.msgInfoPublishMan = msgInfoPublishMan;
+	}
+	public String getMsgInfoPublishTime() {
+		return msgInfoPublishTime;
+	}
+	public void setMsgInfoPublishTime(String msgInfoPublishTime) {
+		this.msgInfoPublishTime = msgInfoPublishTime;
+	}
+	
+	
 	
 }

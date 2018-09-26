@@ -45,7 +45,7 @@
 	<select id="selectWorkLogCollect" resultMap="collectMap">
 		SELECT * FROM
 		(SELECT  wlg.group_name as group_name,
-						wl.create_time as create_time,
+						DATE_FORMAT(wl.create_time,'%Y-%m-%d') as create_time,
 						COUNT(wl.create_user_code) as should_sub_num,
 						COUNT(wl.create_time) as actual_sub_num,
 						COUNT(wl.create_user_code)-COUNT(wl.create_time) as unsub_num,
@@ -59,7 +59,7 @@
 		
 		LEFT JOIN zh_work_log_group wlg ON u.group_id = wlg.id WHERE wlg.is_delete = '0'
 		
-		GROUP BY wlg.group_name HAVING should_sub_num>=0 AND actual_sub_num>=0 AND unsub_num>=0) as tb
+		GROUP BY DATE_FORMAT(wl.create_time,'%Y-%m-%d'),wlg.id HAVING should_sub_num>=0 AND actual_sub_num>=0 AND unsub_num>=0) as tb
 		
 		WHERE 1 = 1
 		<if test="groupCode != null and groupCode != ''">
@@ -78,7 +78,7 @@
 	SELECT COUNT(*) FROM 
 		(SELECT * FROM
 		(SELECT  wlg.group_name as group_name,
-						wl.create_time as create_time,
+						DATE_FORMAT(wl.create_time,'%Y-%m-%d') as create_time,
 						COUNT(wl.create_user_code) as should_sub_num,
 						COUNT(wl.create_time) as actual_sub_num,
 						COUNT(wl.create_user_code)-COUNT(wl.create_time) as unsub_num,
@@ -92,7 +92,7 @@
 		
 		LEFT JOIN zh_work_log_group wlg ON u.group_id = wlg.id WHERE wlg.is_delete = '0'
 		
-		GROUP BY wlg.group_name HAVING should_sub_num>=0 AND actual_sub_num>=0 AND unsub_num>=0) as tb
+		GROUP BY DATE_FORMAT(wl.create_time,'%Y-%m-%d'),wlg.id HAVING should_sub_num>=0 AND actual_sub_num>=0 AND unsub_num>=0) as tb
 		
 		WHERE 1 = 1
 		<if test="groupCode != null and groupCode != ''">

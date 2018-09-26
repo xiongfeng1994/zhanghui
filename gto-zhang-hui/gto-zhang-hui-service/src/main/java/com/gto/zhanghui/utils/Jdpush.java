@@ -103,4 +103,8 @@ public class Jdpush {
 						.addAudienceTarget(AudienceTarget.alias("alias1", "alias2")).build())
 				.setMessage(Message.newBuilder().setMsgContent(MSG_CONTENT).addExtra("from", "JPush").build()).build();
 	}
+	
+	public static void main(String[] args) {
+		Jdpush.testSendPush("8e425bfc47f72304f560eff4","e6113bdc95419adbcf02290e");
+	}
 }

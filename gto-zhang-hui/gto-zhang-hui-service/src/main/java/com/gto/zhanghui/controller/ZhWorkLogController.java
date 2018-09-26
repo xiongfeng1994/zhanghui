@@ -19,7 +19,6 @@ import com.gto.common.utils.PageUtils;
 import com.gto.common.utils.R;
 import com.gto.common.validator.ValidatorUtils;
 import com.gto.zhanghui.entity.ZhWorkLogEntity;
-import com.gto.zhanghui.response.VisitFarewellDetail;
 import com.gto.zhanghui.response.WorkLogCollect;
 import com.gto.zhanghui.response.WorkLogDetail;
 import com.gto.zhanghui.service.ZhWorkLogService;

@@ -2,9 +2,10 @@ package com.gto.zhanghui.service;
 
 import com.baomidou.mybatisplus.service.IService;
 import com.gto.common.utils.PageUtils;
-import com.gto.common.utils.R;
 import com.gto.zhanghui.entity.ZhUsersEntity;
+import com.gto.zhanghui.response.UserGroup;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -20,6 +21,7 @@ public interface ZhUsersService extends IService<ZhUsersEntity> {
     
     PageUtils queryPageByUserName(String empName);
     
-    R login(String account, String password);
+    List<UserGroup> selectUserGroup(String userName); 
+    
 }
 

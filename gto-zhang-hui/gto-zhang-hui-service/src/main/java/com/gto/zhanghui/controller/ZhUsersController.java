@@ -1,6 +1,7 @@
 package com.gto.zhanghui.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -20,6 +21,7 @@ import com.gto.common.utils.R;
 import com.gto.common.validator.ValidatorUtils;
 import com.gto.zhanghui.cache.RedisCacheUtil;
 import com.gto.zhanghui.entity.ZhUsersEntity;
+import com.gto.zhanghui.response.UserGroup;
 import com.gto.zhanghui.service.ZhUsersService;
 
 import io.swagger.annotations.ApiOperation;
@@ -43,31 +45,11 @@ public class ZhUsersController {
     @GetMapping("/user-query")
     @ApiOperation(value = "根据员工姓名查询")
     public R userQuery(@RequestParam(required = false) String empName) {
-    	PageUtils page = zhUsersService.queryPageByUserName(empName);
-    	return R.ok().put("data", page);
-    }
-    
-    @GetMapping("/login")
-    @ApiOperation(value = "登陆")
-    public R login(@RequestParam String account,@RequestParam String password) {
-    	R result  = zhUsersService.login(account, password);
-    	return result;
-    }
-    
-    @GetMapping("/logout")
-    @ApiOperation(value = "登出")
-    public R logout(HttpServletRequest request) {
-    	String authorization = request.getHeader("Authorization");
-    	String token = RedisCacheUtil.get(authorization);
-    	if(StringUtils.isBlank(token)) {
-    		return R.error(500, "登陆超时");
+    	if(StringUtils.isBlank(empName)) {
+    		return R.error("请输入员工姓名");
     	}
-    	RedisCacheUtil.del(authorization);
-    	String flag = RedisCacheUtil.get(authorization);
-    	if(StringUtils.isBlank(flag)) {
-    		return R.ok();
-    	}
-    	return R.error();
+    	List<UserGroup> userGroups = zhUsersService.selectUserGroup(empName);
+    	return R.ok().put("data", userGroups);
     }
     
     /**

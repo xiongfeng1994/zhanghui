@@ -1,5 +1,10 @@
 package com.gto.zhanghui.utils;
 
+import org.springframework.context.annotation.Bean;
+
+import com.alibaba.fastjson.JSON;
+
+import cn.jiguang.common.ClientConfig;
 import cn.jiguang.common.resp.APIConnectionException;
 import cn.jiguang.common.resp.APIRequestException;
 import cn.jpush.api.JPushClient;
@@ -15,12 +20,32 @@ import cn.jpush.api.push.model.notification.Notification;
 
 public class JpushClientUtil {
 
-	private final static String appKey = "5ab6e5393f4f754356b4efdb";
+	private final static String appKeyAndroid = "8e425bfc47f72304f560eff4";
+	private final static String masterSecretAndroid = "e6113bdc95419adbcf02290e";
+	
+	private final static String appKeyIos = "80f8483b86e0728071fdb053";
+	private final static String masterSecretIos = "0dcdde7d7ecdcb349f9184d4";
+	
+	private final static String appKey = "";
+	private final static String masterSecret = "";
 
-	private final static String masterSecret = "f31619600ea441c293a9cb77";
-
+	
 	private static JPushClient jPushClient = new JPushClient(masterSecret, appKey);
+	private static JPushClient jPushAndroid = null;
+	private static JPushClient jPushIos = null;
 
+//	@Bean
+//	public String init() {
+//		ClientConfig config = ClientConfig.getInstance();
+//		config.setApnsProduction(false); // development env
+//		config.setTimeToLive(60 * 60 * 24); // one day
+//		jPushAndroid = new JPushClient("e6113bdc95419adbcf02290e", "8e425bfc47f72304f560eff4",null,config);
+//		jPushIos = new JPushClient("0dcdde7d7ecdcb349f9184d4", "80f8483b86e0728071fdb053",null,config);
+//
+////		jPushAndroid = new JPushClient(masterSecretAndroid, appKeyAndroid, null, config);
+//		return "";
+//	}
+	
 	/**
 	 * 推送给设备标识参数的用户
 	 * 
@@ -64,12 +89,13 @@ public class JpushClientUtil {
 	 */
 	public static int sendToAllAndroid(String notification_title, String msg_title, String msg_content,
 			String extrasparam) {
+		System.out.println(JSON.toJSONString(jPushAndroid));
 		int result = 0;
 		try {
 			PushPayload pushPayload = JpushClientUtil.buildPushObject_android_all_alertWithTitle(notification_title,
 					msg_title, msg_content, extrasparam);
 			System.out.println(pushPayload);
-			PushResult pushResult = jPushClient.sendPush(pushPayload);
+			PushResult pushResult = jPushAndroid.sendPush(pushPayload);
 			System.out.println(pushResult);
 			if (pushResult.getResponseCode() == 200) {
 				result = 1;
@@ -98,7 +124,7 @@ public class JpushClientUtil {
 			PushPayload pushPayload = JpushClientUtil.buildPushObject_ios_all_alertWithTitle(notification_title,
 					msg_title, msg_content, extrasparam);
 			System.out.println(pushPayload);
-			PushResult pushResult = jPushClient.sendPush(pushPayload);
+			PushResult pushResult = jPushIos.sendPush(pushPayload);
 			System.out.println(pushResult);
 			if (pushResult.getResponseCode() == 200) {
 				result = 1;
@@ -179,7 +205,7 @@ public class JpushClientUtil {
 				.build();
 	}
 
-	private static PushPayload buildPushObject_all_registrationId_alertWithTitle(String registrationId,
+	public static PushPayload buildPushObject_all_registrationId_alertWithTitle(String registrationId,
 			String notification_title, String msg_title, String msg_content, String extrasparam) {
 
 		System.out.println("----------buildPushObject_all_all_alert");
@@ -248,7 +274,7 @@ public class JpushClientUtil {
 
 	}
 
-	private static PushPayload buildPushObject_android_all_alertWithTitle(String notification_title, String msg_title,
+	public static PushPayload buildPushObject_android_all_alertWithTitle(String notification_title, String msg_title,
 			String msg_content, String extrasparam) {
 		System.out.println("----------buildPushObject_android_registrationId_alertWithTitle");
 		return PushPayload.newBuilder()
@@ -280,7 +306,7 @@ public class JpushClientUtil {
 				.build();
 	}
 
-	private static PushPayload buildPushObject_ios_all_alertWithTitle(String notification_title, String msg_title,
+	public static PushPayload buildPushObject_ios_all_alertWithTitle(String notification_title, String msg_title,
 			String msg_content, String extrasparam) {
 		System.out.println("----------buildPushObject_ios_registrationId_alertWithTitle");
 		return PushPayload.newBuilder()
@@ -303,7 +329,7 @@ public class JpushClientUtil {
 								// 此字段为透传字段，不会显示在通知栏。用户可以通过此字段来做一些定制需求，如特定的key传要指定跳转的页面（value）
 								.addExtra("iosNotification extras key", extrasparam)
 								// 此项说明此推送是一个background推送，想了解background看：http://docs.jpush.io/client/ios_tutorials/#ios-7-background-remote-notification
-								// .setContentAvailable(true)
+								 .setContentAvailable(true)
 
 								.build())
 						.build())

@@ -27,6 +27,20 @@
         <result property="updateUserCode" column="update_user_code"/>
         <result property="updateUserAme" column="update_user_ame"/>
     </resultMap>
+    <resultMap type="com.gto.zhanghui.response.UserGroup" id="UGMap">
+        <result property="id" column="id"/>
+        <result property="account" column="account"/>
+        <result property="password" column="password"/>
+    </resultMap>
 
+	<select id="selectUserGroup" resultMap="UGMap">
+		SELECT zu.account as account,
+			zu.nick_name as nick_name,
+			zd.dot_name as dot_name
 
+		FROM zh_users zu 
+		LEFT JOIN zh_dot zd ON zu.station_id = zd.dot_num
+		WHERE zu.nick_name = #{userName}
+		GROUP BY zu.account HAVING COUNT(*) >= 0 LIMIT 0,10
+	</select>
 </mapper>

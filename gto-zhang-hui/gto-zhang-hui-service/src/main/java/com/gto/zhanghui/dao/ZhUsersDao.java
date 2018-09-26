@@ -1,6 +1,12 @@
 package com.gto.zhanghui.dao;
 
 import com.gto.zhanghui.entity.ZhUsersEntity;
+import com.gto.zhanghui.response.UserGroup;
+
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+
 import com.baomidou.mybatisplus.mapper.BaseMapper;
 
 /**
@@ -12,4 +18,5 @@ import com.baomidou.mybatisplus.mapper.BaseMapper;
  */
 public interface ZhUsersDao extends BaseMapper<ZhUsersEntity> {
 	
+	List<UserGroup> selectUserGroup(@Param("userName") String userName);
 }
