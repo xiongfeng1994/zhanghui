@@ -18,18 +18,20 @@ import com.gto.zhanghui.service.ZhAdminUserService;
 public class ZhAdminUserServiceImpl extends ServiceImpl<ZhAdminUserDao, ZhAdminUserEntity> implements ZhAdminUserService{
 
 	@Override
-	public R login(String account, String password) {
+	public R login(String account, String password, String siteNo) {
 		List<ZhAdminUserEntity> zhAdminEntities = this.baseMapper.selectList(
 												new EntityWrapper<ZhAdminUserEntity>()
 												.eq("user_code", account)
-												.eq("password", password));
+												.eq("password", password)
+												.eq("site_no", siteNo));
 		ZhAdminUserEntity zhEntity = zhAdminEntities.get(0);
 		if(zhEntity == null) {
 			return R.error("用户名或密码错误");
 		}
 		String token = UUID.randomUUID().toString().replace("-", "").toLowerCase();
 		RedisCacheUtil.set(token, JSON.toJSON(zhEntity), 7200);
-		return R.ok().put("token", token);
+		zhEntity.setToken(token);
+		return R.ok().put("data", zhEntity);
 	}
 
 }

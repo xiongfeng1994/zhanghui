@@ -20,16 +20,16 @@ public interface ZhAttendRecordsService extends IService<ZhAttendRecordsEntity> 
 
     PageUtils queryPage(Map<String, Object> params);
     
-    List<VisitCollect> queryVisitCollect(String empCode,String siteCode,String startTime,String endTime,int limit,int offset);
+    List<VisitCollect> queryVisitCollect(String empCode,String siteCode,String startTime,String endTime,String typeName,int limit,int offset);
     
-    int selectVisitHistoryCount(String empCode,String siteCode,String startTime,String endTime);
+    int selectVisitHistoryCount(String empCode,String siteCode,String startTime,String endTime,String typeName);
     
-    List<VisitFarewellDetail> queryVisitFarewellDetail(String startTime,String endTime,String account,int limit,int offset);
+    List<VisitFarewellDetail> queryVisitFarewellDetail(String startTime,String endTime,String account,String typeName,int limit,int offset);
     
-    int selectVisitCount(String startTime,String endTime,String account);
+    int selectVisitCount(String startTime,String endTime,String account,String typeName);
     
-    List<VisitFarewellDetail> queryNoFarewellDetail(String startTime,String endTime,String account,int limit,int offset);
+    List<VisitFarewellDetail> queryNoFarewellDetail(String startTime,String endTime,String account,String typeName,int limit,int offset);
     
-    int selectNoFarewellCount(String startTime,String endTime,String account);
+    int selectNoFarewellCount(String startTime,String endTime,String account,String typeName);
 }
 

@@ -34,38 +34,38 @@ public class ZhAttendRecordsServiceImpl extends ServiceImpl<ZhAttendRecordsDao, 
     }
 
 	@Override
-	public List<VisitCollect> queryVisitCollect(String empCode, String siteCode, String startTime, String endTime,int limit,int offset) {
-		List<VisitCollect> visitCollects = zhAttendRecordsDao.selectVisitHistory(empCode, siteCode, startTime, endTime, limit, offset);
+	public List<VisitCollect> queryVisitCollect(String empCode, String siteCode, String startTime, String endTime,String typeName,int limit,int offset) {
+		List<VisitCollect> visitCollects = zhAttendRecordsDao.selectVisitHistory(empCode, siteCode, startTime, endTime, typeName, limit, offset);
 		return visitCollects;
 	}
 	
 	@Override
-	public int selectVisitHistoryCount(String empCode, String siteCode, String startTime, String endTime) {
-		int count = zhAttendRecordsDao.selectVisitHistoryCount(empCode,siteCode,startTime,endTime);
+	public int selectVisitHistoryCount(String empCode, String siteCode, String startTime, String endTime,String typeName) {
+		int count = zhAttendRecordsDao.selectVisitHistoryCount(empCode,siteCode,startTime,endTime,typeName);
 		return count;
 	}
 
 	@Override
-	public List<VisitFarewellDetail> queryVisitFarewellDetail(String startTime, String endTime, String account,int limit,int offset) {
-		List<VisitFarewellDetail> visitFarewellDetails = zhAttendRecordsDao.selectVisit(startTime, endTime, account,limit,offset);
+	public List<VisitFarewellDetail> queryVisitFarewellDetail(String startTime, String endTime, String account,String typeName,int limit,int offset) {
+		List<VisitFarewellDetail> visitFarewellDetails = zhAttendRecordsDao.selectVisit(startTime, endTime, account,typeName,limit,offset);
 		return visitFarewellDetails;
 	}
 	
 	@Override
-	public int selectVisitCount(String startTime, String endTime, String account) {
-		int count = zhAttendRecordsDao.selectVisitCount(startTime,endTime,account);
+	public int selectVisitCount(String startTime, String endTime, String account,String typeName) {
+		int count = zhAttendRecordsDao.selectVisitCount(startTime,endTime,account,typeName);
 		return count;
 	}
 
 	@Override
-	public List<VisitFarewellDetail> queryNoFarewellDetail(String startTime, String endTime, String account,int limit,int offset) {
-		List<VisitFarewellDetail> visitFarewellDetails = zhAttendRecordsDao.selectNoFarewell(startTime, endTime, account,limit,offset);
+	public List<VisitFarewellDetail> queryNoFarewellDetail(String startTime, String endTime, String account,String typeName,int limit,int offset) {
+		List<VisitFarewellDetail> visitFarewellDetails = zhAttendRecordsDao.selectNoFarewell(startTime, endTime, account,typeName,limit,offset);
 		return visitFarewellDetails;
 	}
 
 	@Override
-	public int selectNoFarewellCount(String startTime, String endTime, String account) {
-		int count = zhAttendRecordsDao.selectNoFarewellCount(startTime, endTime, account);
+	public int selectNoFarewellCount(String startTime, String endTime, String account,String typeName) {
+		int count = zhAttendRecordsDao.selectNoFarewellCount(startTime, endTime, account,typeName);
 		return count;
 	}
 

@@ -5,10 +5,25 @@ public class VisitCollect {
 	private String nickName;
 	private String account;
 	private String dotName;
+	private String dotNum;
+	private String province;
 	private String createTime;
 	private String visitNum;
 	private String farewellNum;
 	
+	
+	public String getProvince() {
+		return province;
+	}
+	public void setProvince(String province) {
+		this.province = province;
+	}
+	public String getDotNum() {
+		return dotNum;
+	}
+	public void setDotNum(String dotNum) {
+		this.dotNum = dotNum;
+	}
 	public String getAccount() {
 		return account;
 	}

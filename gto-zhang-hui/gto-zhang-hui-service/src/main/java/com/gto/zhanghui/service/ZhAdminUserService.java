@@ -6,5 +6,5 @@ import com.gto.zhanghui.entity.ZhAdminUserEntity;
 
 public interface ZhAdminUserService extends IService<ZhAdminUserEntity>{
 
-	R login(String account, String password);
+	R login(String account, String password, String siteNo);
 }

@@ -23,31 +23,37 @@ public interface ZhAttendRecordsDao extends BaseMapper<ZhAttendRecordsEntity> {
 								   		  @Param("siteCode") String siteCode,
 								   		  @Param("startTime") String startTime,
 								   		  @Param("endTime") String endTime,
+								   		  @Param("typeName") String typeName,
 								   		  @Param("limit") int limit,
 								   		  @Param("offset") int offset);
 	
 	int selectVisitHistoryCount(@Param("empCode") String empCode,
 					   		  @Param("siteCode") String siteCode,
 					   		  @Param("startTime") String startTime,
-					   		  @Param("endTime") String endTime);
+					   		  @Param("endTime") String endTime,
+					   		  @Param("typeName") String typeName);
 	
 	List<VisitFarewellDetail> selectVisit(@Param("startTime") String startTime,
 										  @Param("endTime") String endTime,
 										  @Param("account") String account,
+										  @Param("typeName") String typeName,
 										  @Param("limit") int limit,
 								   		  @Param("offset") int offset);
 	
 	int selectVisitCount(@Param("startTime") String startTime,
 						  @Param("endTime") String endTime,
-						  @Param("account") String account);
+						  @Param("account") String account,
+						  @Param("typeName") String typeName);
 	
 	List<VisitFarewellDetail> selectNoFarewell(@Param("startTime") String startTime,
 			  								   @Param("endTime") String endTime,
 			  								   @Param("account") String account,
+			  								   @Param("typeName") String typeName,
 			  								   @Param("limit") int limit,
 									   		   @Param("offset") int offset);
 	
 	int selectNoFarewellCount(@Param("startTime") String startTime,
 			   				 @Param("endTime") String endTime,
-			   				 @Param("account") String account);
+			   				 @Param("account") String account,
+			   				 @Param("typeName") String typeName);
 }

@@ -48,10 +48,11 @@ public class ZhAttendRecordsController {
     						   @RequestParam(required = false) String endTime,
     						   @RequestParam(required = false) String siteCode,
     						   @RequestParam(required = false) String empCode,
+    						   @RequestParam(required = false) String typeName,
     						   @RequestParam(defaultValue = "1") int currPage,
     						   @RequestParam(defaultValue = "10") int pageSize) {
-    	List<VisitCollect> visitCollects = zhAttendRecordsService.queryVisitCollect(empCode, siteCode, startTime, endTime, currPage*pageSize-pageSize, pageSize);
-    	int totalCount = zhAttendRecordsService.selectVisitHistoryCount(empCode, siteCode, startTime, endTime);
+    	List<VisitCollect> visitCollects = zhAttendRecordsService.queryVisitCollect(empCode, siteCode, startTime, endTime,typeName, currPage*pageSize-pageSize, pageSize);
+    	int totalCount = zhAttendRecordsService.selectVisitHistoryCount(empCode, siteCode, startTime, endTime,typeName);
     	PageUtils page = new PageUtils(visitCollects, totalCount, pageSize, currPage);
     	return R.ok().put("data", page);
     }
@@ -61,10 +62,11 @@ public class ZhAttendRecordsController {
     public R visitFarewellquery(@RequestParam(required = false) String startTime,
 			   				    @RequestParam(required = false) String endTime,
 			   				    @RequestParam(required = false) String account,
+			   				    @RequestParam(required = false) String typeName,
 			   				    @RequestParam(defaultValue = "1") int currPage,
 			   				    @RequestParam(defaultValue = "10") int pageSize) {
-    	List<VisitFarewellDetail> visitFarewellDetails = zhAttendRecordsService.queryVisitFarewellDetail(startTime, endTime, account,currPage*pageSize-pageSize, pageSize);
-    	int totalCount = zhAttendRecordsService.selectVisitCount(startTime, endTime, account);
+    	List<VisitFarewellDetail> visitFarewellDetails = zhAttendRecordsService.queryVisitFarewellDetail(startTime, endTime, account,typeName,currPage*pageSize-pageSize, pageSize);
+    	int totalCount = zhAttendRecordsService.selectVisitCount(startTime, endTime, account,typeName);
     	PageUtils page = new PageUtils(visitFarewellDetails, totalCount, pageSize, currPage);
     	return R.ok().put("data", page);
     }
@@ -74,10 +76,11 @@ public class ZhAttendRecordsController {
     public R noFarewellquery(@RequestParam(required = false) String startTime,
 			   				 @RequestParam(required = false) String endTime,
 			   				 @RequestParam(required = false) String account,
+			   				 @RequestParam(required = false) String typeName,
 			   				 @RequestParam(defaultValue = "1") int currPage,
 		   				     @RequestParam(defaultValue = "10") int pageSize) {
-    	List<VisitFarewellDetail> visitFarewellDetails = zhAttendRecordsService.queryNoFarewellDetail(startTime, endTime, account,currPage*pageSize-pageSize, pageSize);
-    	int totalCount = zhAttendRecordsService.selectNoFarewellCount(startTime, endTime, account);
+    	List<VisitFarewellDetail> visitFarewellDetails = zhAttendRecordsService.queryNoFarewellDetail(startTime, endTime, account,typeName,currPage*pageSize-pageSize, pageSize);
+    	int totalCount = zhAttendRecordsService.selectNoFarewellCount(startTime, endTime, account,typeName);
     	PageUtils page = new PageUtils(visitFarewellDetails, totalCount, pageSize, currPage);
     	return R.ok().put("data", page);
     }
@@ -87,10 +90,11 @@ public class ZhAttendRecordsController {
     public R visitFarewellexport(@RequestParam(required = false) String startTime,
 			   				 	 @RequestParam(required = false) String endTime,
 			   				 	 @RequestParam(required = false) String account,
+			   				 	 @RequestParam(required = false) String typeName,
 			   				 	 @RequestParam(defaultValue = "1") int currPage,
 			   				     @RequestParam(defaultValue = "10") int pageSize,
 			   				 	 HttpServletResponse response) {
-    	List<VisitFarewellDetail> visitFarewellDetails = zhAttendRecordsService.queryVisitFarewellDetail(startTime, endTime, account,currPage*pageSize-pageSize, pageSize);
+    	List<VisitFarewellDetail> visitFarewellDetails = zhAttendRecordsService.queryVisitFarewellDetail(startTime, endTime, account,typeName,currPage*pageSize-pageSize, pageSize);
     	FileUtil.exportExcel(visitFarewellDetails, "拜访记录", "6666", VisitFarewellDetail.class, "拜访记录表.xls", response);
     	return R.ok();
     }

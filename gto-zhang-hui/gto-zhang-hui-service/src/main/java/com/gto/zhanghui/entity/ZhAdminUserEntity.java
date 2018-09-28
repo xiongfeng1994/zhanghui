@@ -1,7 +1,9 @@
 package com.gto.zhanghui.entity;
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @TableName("zh_admin_user")
 public class ZhAdminUserEntity {
@@ -10,10 +12,33 @@ public class ZhAdminUserEntity {
 	private Integer id;
 	private String userCode;
 	private String userName;
+	private String siteNo;
+	private String siteName;
+	@JsonIgnore
 	private String password;
 	private String userRole;
 	private String addTime;
+	@TableField(exist = false)
+	private String token;
 	
+	public String getToken() {
+		return token;
+	}
+	public void setToken(String token) {
+		this.token = token;
+	}
+	public String getSiteNo() {
+		return siteNo;
+	}
+	public void setSiteNo(String siteNo) {
+		this.siteNo = siteNo;
+	}
+	public String getSiteName() {
+		return siteName;
+	}
+	public void setSiteName(String siteName) {
+		this.siteName = siteName;
+	}
 	public Integer getId() {
 		return id;
 	}

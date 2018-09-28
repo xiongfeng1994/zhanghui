@@ -17,30 +17,45 @@ public class VisitFarewellDetail {
 	@Excel(name = "拜访位置", orderNum = "5")
 	private String signAddress;
 	@Excel(name = "拜访类型", orderNum = "6")
-	private String attendTypeId;
+	private String typeName;
 	@Excel(name = "主要事宜", orderNum = "7")
 	private String content;
 	@Excel(name = "备注", orderNum = "8")
 	private String signRemark;
-	@Excel(name = "拜访时间", orderNum = "9")
+	@Excel(name = "所属省份", orderNum = "9")
+	private String province;
+	@Excel(name = "拜访时间", orderNum = "10")
 	private String signTime;
-	@Excel(name = "拜访上传时间", orderNum = "10")
+	@Excel(name = "拜访上传时间", orderNum = "11")
 	private String createTime;
-	@Excel(name = "拜访结果", orderNum = "11")
+	@Excel(name = "拜访结果", orderNum = "12")
 	private String result;
-	@Excel(name = "拜别时间", orderNum = "12")
+	@Excel(name = "拜别时间", orderNum = "13")
 	private String endTime;
-	@Excel(name = "拜别上传时间", orderNum = "13")
+	@Excel(name = "拜别上传时间", orderNum = "14")
 	private String updateTime;
-	@Excel(name = "地址1", orderNum = "14")
+	@Excel(name = "地址1", orderNum = "15")
 	private String url1;
-	@Excel(name = "地址2", orderNum = "15")
+	@Excel(name = "地址2", orderNum = "16")
 	private String url2;
 	
 	public VisitFarewellDetail() {
 		// TODO Auto-generated constructor stub
 	}
 	
+	
+	public String getTypeName() {
+		return typeName;
+	}
+	public void setTypeName(String typeName) {
+		this.typeName = typeName;
+	}
+	public String getProvince() {
+		return province;
+	}
+	public void setProvince(String province) {
+		this.province = province;
+	}
 	public String getUrl1() {
 		return url1;
 	}
@@ -88,12 +103,6 @@ public class VisitFarewellDetail {
 	}
 	public void setSignAddress(String signAddress) {
 		this.signAddress = signAddress;
-	}
-	public String getAttendTypeId() {
-		return attendTypeId;
-	}
-	public void setAttendTypeId(String attendTypeId) {
-		this.attendTypeId = attendTypeId;
 	}
 	public String getContent() {
 		return content;
