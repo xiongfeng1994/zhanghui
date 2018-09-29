@@ -64,7 +64,7 @@
 				d.province as province,
 			 	DATE_FORMAT(ar.create_time,'%Y-%m-%d') as create_time,
 			 	COUNT(ar.create_user_code) as visit_num,
-			 	COUNT(ar.update_time) as farewell_num
+			 	COUNT(ar.id) - COUNT(ar.update_user_code) as farewell_num
 
 		FROM zh_attend_records ar 
 		
@@ -98,7 +98,7 @@
 				d.province as province,
 			 	DATE_FORMAT(ar.create_time,'%Y-%m-%d') as create_time,
 			 	COUNT(ar.create_user_code) as visit_num,
-			 	COUNT(ar.update_time) as farewell_num
+			 	COUNT(ar.id) - COUNT(ar.update_user_code) as farewell_num
 
 		FROM zh_attend_records ar 
 		
