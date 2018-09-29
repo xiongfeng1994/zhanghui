@@ -151,6 +151,17 @@ public class ZhWorkLogGroupController {
     }
     
     /**
+     * 编辑信息
+     */
+    @GetMapping("/log-group-info/{id}")
+    @ApiOperation(value = "编辑信息")
+    public R info(@PathVariable("id") Integer id){
+        ZhWorkLogGroupEntity zhWorkLogGroup = zhWorkLogGroupService.selectById(id);
+
+        return R.ok().put("data", zhWorkLogGroup);
+    }
+    
+    /**
      * 列表
      */
     @RequestMapping("/listLogGroup")
@@ -158,17 +169,6 @@ public class ZhWorkLogGroupController {
         PageUtils page = zhWorkLogGroupService.queryPage(params);
 
         return R.ok().put("page", page);
-    }
-
-
-    /**
-     * 信息
-     */
-    @RequestMapping("/infoLogGroup/{id}")
-    public R info(@PathVariable("id") Integer id){
-        ZhWorkLogGroupEntity zhWorkLogGroup = zhWorkLogGroupService.selectById(id);
-
-        return R.ok().put("zhWorkLogGroup", zhWorkLogGroup);
     }
 
 }
