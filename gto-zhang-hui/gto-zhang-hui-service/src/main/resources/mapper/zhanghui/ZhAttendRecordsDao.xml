@@ -69,7 +69,7 @@
 		FROM zh_attend_records ar 
 		
 			LEFT JOIN zh_users u ON ar.create_user_code = u.account
-			LEFT JOIN zh_dot d ON u.account = d.create_user_code
+			LEFT JOIN zh_dot d ON u.station_id = d.dot_num
 			LEFT JOIN zh_attend_type zat ON ar.attend_type_id = zat.id
 		
 		WHERE 1 =1 AND zat.is_delete = 0
@@ -103,7 +103,7 @@
 		FROM zh_attend_records ar 
 		
 			LEFT JOIN zh_users u ON ar.create_user_code = u.account
-			LEFT JOIN zh_dot d ON u.account = d.create_user_code
+			LEFT JOIN zh_dot d ON u.station_id = d.dot_num
 			LEFT JOIN zh_attend_type zat ON ar.attend_type_id = zat.id
 		
 		WHERE 1 = 1 AND zat.is_delete = 0
@@ -146,7 +146,7 @@
 		
 			LEFT JOIN zh_users u ON ar.create_user_name = u.nick_name
 			LEFT JOIN zh_attend_type zat ON ar.attend_type_id = zat.id
-			LEFT JOIN zh_dot d ON ar.create_user_name = d.create_user_name
+			LEFT JOIN zh_dot d ON u.station_id = d.dot_num
 		
 		WHERE 1 = 1 AND zat.is_delete = 0
 		<if test="typeName != null and typeName != ''">
@@ -185,7 +185,7 @@
 		
 			LEFT JOIN zh_users u ON ar.create_user_name = u.nick_name
 			LEFT JOIN zh_attend_type zat ON ar.attend_type_id = zat.id
-			LEFT JOIN zh_dot d ON ar.create_user_name = d.create_user_name
+			LEFT JOIN zh_dot d ON u.station_id = d.dot_num
 		
 		WHERE 1 = 1 AND zat.is_delete = 0
 		<if test="typeName != null and typeName != ''">
@@ -224,7 +224,7 @@
 		
 			LEFT JOIN zh_users u ON ar.create_user_name = u.nick_name
 			LEFT JOIN zh_attend_type zat ON ar.attend_type_id = zat.id
-			LEFT JOIN zh_dot d ON ar.create_user_name = d.create_user_name
+			LEFT JOIN zh_dot d ON u.station_id = d.dot_num
 		
 		WHERE 1 = 1 AND zat.is_delete = 0
 		<if test="typeName != null and typeName != ''">
@@ -263,7 +263,7 @@
 		
 			LEFT JOIN zh_users u ON ar.create_user_name = u.nick_name
 			LEFT JOIN zh_attend_type zat ON ar.attend_type_id = zat.id
-			LEFT JOIN zh_dot d ON ar.create_user_name = d.create_user_name
+			LEFT JOIN zh_dot d ON u.station_id = d.dot_num
 		
 		WHERE 1 = 1 AND zat.is_delete = 0
 		<if test="typeName != null and typeName != ''">

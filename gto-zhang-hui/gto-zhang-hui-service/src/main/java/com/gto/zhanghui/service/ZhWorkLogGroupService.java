@@ -20,5 +20,7 @@ public interface ZhWorkLogGroupService extends IService<ZhWorkLogGroupEntity> {
     Integer deleteLogGroup(String id);
     
     PageUtils queryLogGroup(String groupName,String groupLeader,String allUserName,String remark,int limit,int offset);
+    
+//    ZhWorkLogGroupEntity selectEntity();
 }
 

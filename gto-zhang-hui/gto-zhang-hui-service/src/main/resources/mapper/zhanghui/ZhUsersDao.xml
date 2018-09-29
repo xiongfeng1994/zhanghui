@@ -25,7 +25,7 @@
         <result property="createUserName" column="create_user_name"/>
         <result property="createTime" column="create_time"/>
         <result property="updateUserCode" column="update_user_code"/>
-        <result property="updateUserAme" column="update_user_ame"/>
+        <result property="updateUserName" column="update_user_name"/>
     </resultMap>
     <resultMap type="com.gto.zhanghui.response.UserGroup" id="UGMap">
         <result property="id" column="id"/>
@@ -40,7 +40,7 @@
 
 		FROM zh_users zu 
 		LEFT JOIN zh_dot zd ON zu.station_id = zd.dot_num
-		WHERE zu.nick_name = #{userName}
+		WHERE (zu.nick_name LIKE #{userName} OR zu.account LIKE #{userName})
 		GROUP BY zu.account HAVING COUNT(*) >= 0 LIMIT 0,10
 	</select>
 </mapper>

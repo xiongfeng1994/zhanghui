@@ -127,7 +127,7 @@
 		
 		LEFT JOIN zh_users u ON wl.create_user_code = u.account
 		
-		LEFT JOIN zh_dot d ON u.account = d.create_user_code
+		LEFT JOIN zh_dot d ON u.station_id = d.dot_num
 		
 		LEFT JOIN zh_work_log_group wlg ON u.group_id = wlg.id WHERE wlg.is_delete = '0'
 		
@@ -162,7 +162,7 @@
 		
 		LEFT JOIN zh_users u ON wl.create_user_code = u.account
 		
-		LEFT JOIN zh_dot d ON u.account = d.create_user_code
+		LEFT JOIN zh_dot d ON u.station_id = d.dot_num
 		
 		LEFT JOIN zh_work_log_group wlg ON u.group_id = wlg.id WHERE wlg.is_delete = '0'
 		

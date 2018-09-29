@@ -1,10 +1,14 @@
 package com.gto.zhanghui.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,11 +21,15 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.gto.common.utils.PageUtils;
 import com.gto.common.utils.R;
 import com.gto.zhanghui.cache.RedisCacheUtil;
+import com.gto.zhanghui.entity.ZhUsersEntity;
 import com.gto.zhanghui.entity.ZhWorkLogGroupEntity;
+import com.gto.zhanghui.service.ZhUsersService;
 import com.gto.zhanghui.service.ZhWorkLogGroupService;
+import com.gto.zhanghui.utils.FileUtil;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -38,8 +46,13 @@ import io.swagger.annotations.ApiOperation;
 @RequestMapping("api/zhanghui/v1")
 @CrossOrigin
 public class ZhWorkLogGroupController {
+	
+	private static final Logger log = LoggerFactory.getLogger(ZhWorkLogGroupController.class);
+	
     @Autowired
     private ZhWorkLogGroupService zhWorkLogGroupService;
+    @Autowired
+    private ZhUsersService zhUsersService;
 
     /**
      * 保存
@@ -58,6 +71,32 @@ public class ZhWorkLogGroupController {
     	zhWorkLogGroup.setIsDelete(0);
     	zhWorkLogGroup.setCreateTime(new Date());
         boolean result = zhWorkLogGroupService.insert(zhWorkLogGroup);
+        // 更新user表groupId
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy",Locale.US);
+        sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        ZhWorkLogGroupEntity entity = zhWorkLogGroupService.selectOne(
+        		new EntityWrapper<ZhWorkLogGroupEntity>()
+        		.eq("create_time",sdf.format(zhWorkLogGroup.getCreateTime())));
+       log.info("ZhWorkLogGroupEntity>>>>>>>>>>>>>"+JSON.toJSONString(entity));
+       String groupLeader = zhWorkLogGroup.getGroupLeader();
+       String number = FileUtil.extractNumber(groupLeader);
+       ZhUsersEntity zhUsersEntity = new ZhUsersEntity();
+       zhUsersEntity.setGroupId(entity.getId());
+       zhUsersService.update(
+    		   zhUsersEntity, 
+    		   new EntityWrapper<ZhUsersEntity>()
+    		   .eq("account", number));
+       String allUserName = zhWorkLogGroup.getAllUserName();
+       String[] name = allUserName.split(",");
+       for (String string : name) {
+    	   String numbers = FileUtil.extractNumber(string);
+           ZhUsersEntity usersEntity = new ZhUsersEntity();
+           usersEntity.setGroupId(entity.getId());
+           zhUsersService.update(
+        		   usersEntity, 
+        		   new EntityWrapper<ZhUsersEntity>()
+        		   .eq("account", numbers));
+	}
         if(!result) {
         	return R.error(400, "日志组保存失败");
         }
