@@ -3,7 +3,7 @@ package com.gto.zhanghui.response;
 import cn.afterturn.easypoi.excel.annotation.Excel;
 
 public class WorkLogDetail {
-
+	
 	@Excel(name = "员工姓名", orderNum = "0")
 	private String nickName;
 	@Excel(name = "员工编号", orderNum = "1")
@@ -29,6 +29,11 @@ public class WorkLogDetail {
 	private String tomorrowPromise;
 	@Excel(name = "日志提交时间", orderNum = "11")
 	private String createTime;
+	
+	
+	public WorkLogDetail() {
+		// TODO Auto-generated constructor stub
+	}
 	
 	public String getId() {
 		return id;

@@ -71,7 +71,7 @@ public class ZhWorkLogController {
 		return R.ok().put("data", page);
 	}
 
-	@GetMapping("/log-history-export")
+	@GetMapping(value = "/log-history-export")
 	@ApiOperation(value = "导出日志明细excel")
 	public R logHistoryExport(@RequestParam(required = false) String startTime, 
 							 @RequestParam(required = false) String endTime, 
@@ -80,7 +80,7 @@ public class ZhWorkLogController {
 							 @RequestParam(defaultValue = "10") int pageSize,
 							 HttpServletResponse response) {
 		List<WorkLogDetail> workLogDetails = zhWorkLogService.selectWorkLogDetail(id, startTime, endTime,currPage*pageSize-pageSize, pageSize);
-		FileUtil.exportExcel(workLogDetails, "工作日志", "6666", WorkLogDetail.class, "工作日志表.xls", response);
+		FileUtil.exportExcel(workLogDetails, "工作日志", "工作日志", WorkLogDetail.class, "工作日志.xls", response);
 		return R.ok();
 	}
 

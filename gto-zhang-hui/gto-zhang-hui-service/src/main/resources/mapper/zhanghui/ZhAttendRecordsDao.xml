@@ -86,7 +86,9 @@
 			AND ar.create_time BETWEEN #{startTime} and #{endTime}
 		</if>
 		GROUP BY DATE_FORMAT(ar.create_time,'%Y-%m-%d'),u.account HAVING visit_num >= 0
+		<if test="limit != null and limit != '' and offset != null and offset != ''">
 		LIMIT #{limit},#{offset}
+		</if>
     </select>
     
     <select id="selectVisitHistoryCount" resultType="java.lang.Integer">

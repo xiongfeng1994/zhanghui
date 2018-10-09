@@ -138,7 +138,9 @@
 		<if test="startTime != null and startTime != '' and endTime != null and endTime != ''">
 			AND tb.create_time BETWEEN #{startTime} AND #{endTime}
 		</if>
+		<if test="limit != null and limit != '' and offset != null and offset != ''">
 		LIMIT #{limit},#{offset}
+		</if>
 	</select>
 	
 	<select id="selectWorkLogDetailCount" resultType="java.lang.Integer">

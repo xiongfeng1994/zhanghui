@@ -1,8 +1,6 @@
 package com.gto.zhanghui.controller;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -72,11 +70,14 @@ public class ZhWorkLogGroupController {
     	zhWorkLogGroup.setCreateTime(new Date());
         boolean result = zhWorkLogGroupService.insert(zhWorkLogGroup);
         // 更新user表groupId
-        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy",Locale.US);
-        sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy",Locale.US);
+//        sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         ZhWorkLogGroupEntity entity = zhWorkLogGroupService.selectOne(
         		new EntityWrapper<ZhWorkLogGroupEntity>()
-        		.eq("create_time",sdf.format(zhWorkLogGroup.getCreateTime())));
+        		.eq("group_name",zhWorkLogGroup.getGroupName())
+        		.eq("group_leader", zhWorkLogGroup.getGroupLeader())
+        		.eq("remark", zhWorkLogGroup.getRemark())
+        		.eq("all_user_name", zhWorkLogGroup.getAllUserName()));
        log.info("ZhWorkLogGroupEntity>>>>>>>>>>>>>"+JSON.toJSONString(entity));
        String groupLeader = zhWorkLogGroup.getGroupLeader();
        String number = FileUtil.extractNumber(groupLeader);
@@ -146,7 +147,7 @@ public class ZhWorkLogGroupController {
     					   @RequestParam(required = false) String remark,
     					   @RequestParam(defaultValue = "1") int currPage,
 						   @RequestParam(defaultValue = "10") int pageSize){
-    	PageUtils page = zhWorkLogGroupService.queryLogGroup(groupName, groupLeader, allUserName, remark,currPage*pageSize-pageSize, pageSize);
+    	PageUtils page = zhWorkLogGroupService.queryLogGroup(groupName, groupLeader, allUserName, remark,currPage, pageSize);
     	return R.ok().put("data", page);
     }
     

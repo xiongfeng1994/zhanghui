@@ -85,7 +85,7 @@ public class ZhAttendRecordsController {
     	return R.ok().put("data", page);
     }
     
-    @GetMapping("/visit-history-export")
+    @GetMapping(value = "/visit-history-export")
     @ApiOperation(value = "拜访拜别明细导出excel")
     public R visitFarewellexport(@RequestParam(required = false) String startTime,
 			   				 	 @RequestParam(required = false) String endTime,
@@ -95,7 +95,7 @@ public class ZhAttendRecordsController {
 			   				     @RequestParam(defaultValue = "10") int pageSize,
 			   				 	 HttpServletResponse response) {
     	List<VisitFarewellDetail> visitFarewellDetails = zhAttendRecordsService.queryVisitFarewellDetail(startTime, endTime, account,typeName,currPage*pageSize-pageSize, pageSize);
-    	FileUtil.exportExcel(visitFarewellDetails, "拜访记录", "6666", VisitFarewellDetail.class, "拜访记录表.xls", response);
+    	FileUtil.exportExcel(visitFarewellDetails, "拜访记录", "拜访记录", VisitFarewellDetail.class, "拜访记录.xls", response);
     	return R.ok();
     }
     
