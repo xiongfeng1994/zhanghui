@@ -37,15 +37,16 @@ public class ZhAdminUserController {
 	@GetMapping("/login-user")
     @ApiOperation(value = "登陆G3")
     public R loginUser(@RequestParam String account,@RequestParam String password,@RequestParam String siteNo) {
+		
     	return null;
     }
 	
-//	public static void main(String[] args) {
-//		String s = HttpRequest.loginRquest("021003099", "gt123123", "02100");
-//		JSONObject jsonObject = JSON.parseObject(s);
-//		JSONObject UserInfo = jsonObject.getJSONObject("UserInfo");
-//		System.out.println(UserInfo.getString("realName"));
-//	}
+	public static void main(String[] args) {
+		String s = HttpRequest.loginRquest("021003099", "gt123123", "02100");
+		JSONObject jsonObject = JSON.parseObject(s);
+		JSONObject UserInfo = jsonObject.getJSONObject("UserInfo");
+		System.out.println(UserInfo.getString("realName"));
+	}
 	
 	@GetMapping("/logout")
     @ApiOperation(value = "登出")
